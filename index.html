@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Onam Pookalam Mandalam</title>
+  <style>
+    body {
+      background: #fffbe7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .title {
+      font-family: 'Segoe Script', cursive;
+      font-size: 2.2rem;
+      color: #ff914d;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 8px #f9d92388;
+    }
+    .subtitle {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1.2rem;
+      color: #77dd77;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+    canvas {
+      box-shadow: 0 0 20px #aaa;
+      border-radius: 50%;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">ഓണം പൂക്കളം</div>
+  <div class="subtitle">Happy Onam! | Kerala Festival </div>
+  <canvas id="mandala" width="600" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('mandala');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    // Helper to draw a rounded petal
+    function drawPetal(cx, cy, radius, width, angle, color) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(width / 2, -radius / 2, 0, -radius);
+      ctx.quadraticCurveTo(-width / 2, -radius / 2, 0, 0);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Helper to draw a pointed leaf
+    function drawLeaf(cx, cy, radius, width, angle, color) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(width / 2, -radius / 2);
+      ctx.lineTo(0, -radius);
+      ctx.lineTo(-width / 2, -radius / 2);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Helper to draw a circle dot
+    function drawDot(cx, cy, r, color) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    // Helper to draw a half-circle petal (for outermost layer)
+    function drawHalfCirclePetal(cx, cy, radius, width, angle, color) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.arc(0, -radius, width / 2, Math.PI, 0, false);
+      ctx.lineTo(width / 2, 0);
+      ctx.arc(0, 0, width / 2, 0, Math.PI, true);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.shadowColor = "#ffd700";
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Onam pookalam inspired colors: yellow, orange, red, white, green, pink, magenta, gold
+    const rings = [
+      { r: 320, color: "#f9d923" }, // bright yellow
+      { r: 305, color: "#ff914d" }, // orange
+      { r: 290, color: "#ff4d6d" }, // red
+      { r: 275, color: "#fff" },    // white
+      { r: 260, color: "#77dd77" }, // green
+      { r: 245, color: "#f49ac2" }, // pink
+      { r: 230, color: "#ffb3de" }, // magenta-pink
+      { r: 215, color: "#ffd700" }, // gold
+      { r: 200, color: "#f9d923" }, // yellow
+      { r: 185, color: "#ff914d" }, // orange
+      { r: 170, color: "#ff4d6d" }, // red
+      { r: 155, color: "#fff" },    // white
+      { r: 140, color: "#77dd77" }, // green
+      { r: 125, color: "#f49ac2" }, // pink
+      { r: 110, color: "#ffd700" }, // gold
+      { r: 95,  color: "#ff914d" }, // orange
+      { r: 80,  color: "#ff4d6d" }, // red
+      { r: 65,  color: "#fff" },    // white
+      { r: 50,  color: "#77dd77" }  // green
+    ];
+    rings.forEach(ring => {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, ring.r, 0, 2 * Math.PI);
+      ctx.fillStyle = ring.color;
+      ctx.fill();
+    });
+
+    // Outermost layer: Half-circle petals
+    const outerPetalCount = 48;
+    for (let i = 0; i < outerPetalCount; i++) {
+      let angle = (2 * Math.PI / outerPetalCount) * i;
+      drawHalfCirclePetal(centerX, centerY, 340, 80, angle, "#ff4d6d");
+    }
+    // Add a second layer of petals for depth
+    for (let i = 0; i < outerPetalCount; i++) {
+      let angle = (2 * Math.PI / outerPetalCount) * i + Math.PI / outerPetalCount;
+      drawHalfCirclePetal(centerX, centerY, 320, 60, angle, "#ffd700");
+    }
+
+    // Alternate pattern: odd layers are petals, even layers are pointed leaves, add dot layers
+    const petalLayers = [
+      { count: 40, radius: 305, width: 70, color: "#f9d923", type: "petal" }, // yellow
+      { count: 36, radius: 290, width: 65, color: "#ff914d", type: "leaf" }, // orange
+      { count: 32, radius: 275, width: 60, color: "#ff4d6d", type: "petal" }, // red
+      { count: 28, radius: 260, width: 55, color: "#fff", type: "leaf" },    // white
+      { count: 24, radius: 245, width: 50, color: "#77dd77", type: "petal" }, // green
+      { count: 20, radius: 230, width: 45, color: "#f49ac2", type: "leaf" }, // pink
+      { count: 16, radius: 215, width: 40, color: "#ffb3de", type: "petal" }, // magenta-pink
+      { count: 12, radius: 200, width: 35, color: "#ffd700", type: "leaf" } // gold
+    ];
+    petalLayers.forEach(layer => {
+      for (let i = 0; i < layer.count; i++) {
+        let angle = (2 * Math.PI / layer.count) * i;
+        if (layer.type === "petal") {
+          drawPetal(centerX, centerY, layer.radius, layer.width, angle, layer.color);
+        } else if (layer.type === "leaf") {
+          drawLeaf(centerX, centerY, layer.radius, layer.width, angle, layer.color);
+        }
+      }
+    });
+
+    // Add dotted circle layers for more pattern
+    function drawDotLayer(radius, count, color, size) {
+      for (let i = 0; i < count; i++) {
+        let angle = (2 * Math.PI / count) * i;
+        let x = centerX + Math.cos(angle) * radius;
+        let y = centerY + Math.sin(angle) * radius;
+        drawDot(x, y, size, color);
+      }
+    }
+    drawDotLayer(260, 52, "#fff", 7);      // white dots
+    drawDotLayer(200, 36, "#ffd700", 8);   // gold dots
+    drawDotLayer(140, 24, "#ff4d6d", 7);   // red dots
+
+    // Add small flower dots between petals for decoration
+    function drawFlower(cx, cy, size, color, centerColor="#fff") {
+      for (let i = 0; i < 6; i++) {
+        let angle = (2 * Math.PI / 6) * i;
+        let x = cx + Math.cos(angle) * size;
+        let y = cy + Math.sin(angle) * size;
+        ctx.beginPath();
+        ctx.arc(x, y, size / 2.5, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(cx, cy, size / 2.5, 0, 2 * Math.PI);
+      ctx.fillStyle = centerColor;
+      ctx.fill();
+    }
+
+    // Place small flowers on the outermost ring
+    for (let i = 0; i < 48; i++) {
+      let angle = (2 * Math.PI / 48) * i;
+      let x = centerX + Math.cos(angle) * 350;
+      let y = centerY + Math.sin(angle) * 350;
+      drawFlower(x, y, 16, "#f9d923", "#ff914d");
+    }
+
+    // Center flower (no face)
+    drawFlower(centerX, centerY, 22, "#ff4d6d", "#f9d923");
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = "#f9d923";
+    ctx.fill();
+
+  </script>
+</body></html>
