@@ -9,10 +9,25 @@
 ## 🎨 My Pookalam
 
 ### Description
-[Write a brief description of your Pookalam design, inspiration, or the approach you took]
+The design is circular in shape, symbolizing unity and harmony.
 
+It features multiple colorful layers, arranged symmetrically with vibrant floral patterns.
+
+The outermost layer is a bright yellow circle, resembling marigold petals, which gives a festive glow.
+
+Inside, the design consists of repeated triangular petal-like motifs in shades of pink, orange, red, and green radiating outward.
+
+Small white and yellow circles (dots) are placed at regular intervals, enhancing the rhythm of the design.
+
+At the center, there are pink circular flower-like dots, forming the focal point.
 ### Preview
 ![My Pookalam](pookalam.png)
 
 ### Features
-- [Feature 1 - "Colorful geometric patterns"]
+-  "Cultural Significance: Represents Onam, Kerala’s harvest festival, where Pookalam is made to welcome King Mahabali.
+
+Symmetry & Geometry: Radial symmetry gives it balance and harmony, symbolizing prosperity and togetherness.
+
+Colors: Bright and festive (yellow, pink, red, green, white), symbolizing joy, happiness, and abundance.
+
+Modern Style: Though inspired by traditional flower arrangements, this design is created digitally with sharp, clean shapes."
